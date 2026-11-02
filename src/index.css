@@ -1,0 +1,3 @@
+/* Tailwind v4: одной строкой подключается ВСЁ.
+   Никаких tailwind.config.js больше не нужно. */
+@import "tailwindcss";
