@@ -11,6 +11,7 @@
 
 import { useEffect, useState } from 'react'
 import { getProducts } from './api/products.js'
+import productsData from './data/products.json'
 import ProductCard from './components/ProductCard.jsx'
 
 export default function App() {
@@ -98,7 +99,7 @@ export default function App() {
         {/* Загрузка */}
         {loading && (
           <p className="text-neutral-500">
-            Загружаю товары… Открой DevTools → Network, чтобы увидеть запрос.
+            Загружаю товары… Сейчас они берутся из локального JSON-файла.
           </p>
         )}
 
@@ -126,11 +127,11 @@ export default function App() {
           ))}
         </div>
 
-        {/* Подпись для обучения: показываем структуру живого ответа */}
+        {/* Подпись для обучения: показываем, откуда взялись данные */}
         {!loading && !error && (
           <p className="mt-8 text-xs text-neutral-400">
-            Всего у dummyjson товаров: { /* total придёт только если убрать ?limit=12 */ }
-            показано {visibleProducts.length}. Меняй адрес в src/api/products.js.
+            В локальном JSON-файле {productsData.total} товаров, показано {visibleProducts.length}.
+            Данные живут в src/data/products.json — правь его, и приложение обновится.
           </p>
         )}
       </div>

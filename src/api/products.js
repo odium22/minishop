@@ -1,33 +1,29 @@
 // ============================================================
-//  Модуль "общения с API". Вся работа с сетью вынесена сюда,
-//  чтобы в компонентах не мешать логику UI и логику запросов.
+//  Модуль "общения с данными". Вся работа с данными вынесена
+//  сюда, чтобы в компонентах не мешать логику UI и логику
+//  получения данных.
 // ============================================================
 
-// ?limit=12 — dummyjson умеет отдавать не весь каталог, а порцию.
-// Убери параметр — придёт всё (их там ~194 товара).
-const PRODUCTS_URL = 'https://dummyjson.com/products?limit=12'
+// подключение к типо API (нет реальных API для работы которые работали ы в рф)
+import productsData from '../data/products.json'
 
-// async/await — "сахар" над Promise:
-//   fetch(...)            -> возвращает Promise<Response>
-//   await fetch(...)      -> ждёт ответ сервера и кладёт его в res
-//   res.json()            -> тоже Promise, ждём JSON из тела ответа
+// Если если хотите на реально поработать используйте dummyjson (через
+// VPN):
 //
-// ВАЖНО: fetch НЕ падает при HTTP-ошибках (404, 500 и т.д.).
-// Код ответа смотрим сами через res.ok / res.status.
+//   const PRODUCTS_URL = 'https://dummyjson.com/products?limit=50'
+//   const res = await fetch(PRODUCTS_URL)
+//   if (!res.ok) throw new Error(`Сервер ответил ${res.status} ${res.statusText}`)
+//   return await res.json()
+//
+// Структура ответа при этом будет такой же, как у локального файла:
+//   { "products": [ {id, title, price, thumbnail, ...} ], "total": 50, "limit": 50, "skip": 0 }
+
 export async function getProducts() {
-  // Можешь раскомментировать строку ниже и посмотреть в консоли
-  // браузера (F12 → Console), что реально приходит с сервера:
-  // console.log('Отправляю запрос к', PRODUCTS_URL)
+  // Небольшая пауза, чтобы заглушка "Загружаю товары…" успела
+  // показаться — как будто данные реально пришли по сети.
+  await new Promise((resolve) => setTimeout(resolve, 300))
 
-  const res = await fetch(PRODUCTS_URL)
-
-  if (!res.ok) {
-    // Превращаем "молчаливую" HTTP-ошибку в понятную строку,
-    // которую потом покажем пользователю.
-    throw new Error(`Сервер ответил ${res.status} ${res.statusText}`)
-  }
-
-  // Ответ dummyjson выглядит так:
-  // { "products": [ {id, title, price, thumbnail, ...} ], "total": 194, "limit": 12, "skip": 0 }
-  return await res.json()
+  // Возвращаем данные в том же формате, что и dummyjson:
+  // объект с полем products внутри.
+  return productsData
 }

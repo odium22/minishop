@@ -15,10 +15,13 @@
 export default function ProductCard({ product, inCart, onToggle }) {
   return (
     <article className="flex flex-col rounded-xl border border-neutral-200 bg-white p-3">
-      {/* Картинка: thumbnail — готовая миниатюра из API (уже 150px) */}
+      {/* Картинка: thumbnail — миниатюра из данных товара (уже 150px).
+          Если cdn.dummyjson.com заблокирован и картинка не загрузилась,
+          onError подставляет локальную заглушку /no-image.svg. */}
       <img
         src={product.thumbnail}
         alt={product.title}
+        onError={(e) => { e.currentTarget.src = '/no-image.svg' }}
         className="mb-3 h-40 w-full rounded-lg bg-neutral-100 object-cover"
       />
 
